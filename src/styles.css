@@ -113,7 +113,7 @@ body {
     color: #F7F7F7;
     background-color: #6C63FF;
     border: 1px solid #6C63FF;
-    background-image: url(materials/night.svg);
+    background-image: url('/React-Todo-List-zapov-Spt/night.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 20px 20px;
@@ -121,11 +121,11 @@ body {
 }
 
 .light-theme .changeThemeButton {
-    background-image: url(materials/night.svg)
+    background-image: url('/React-Todo-List-zapov-Spt/night.svg');
 }
 
 .dark-theme .changeThemeButton {
-    background-image: url(materials/Sun.Icon.svg);
+    background-image: url('/React-Todo-List-zapov-Spt/Sun.Icon.svg');
 }
 
 .changeThemeButton:hover {
@@ -140,7 +140,7 @@ body {
     min-width: 100px;
     text-align: left;
     font-weight: bold;
-    background-image: url(materials/chevron-top.svg);
+    background-image: url('/React-Todo-List-zapov-Spt/chevron-top.svg');
     background-repeat: no-repeat;
     background-size: 12px 8px;
     background-position: right 16px center;
@@ -159,7 +159,7 @@ body {
 
 .selectorSortTodos:focus {
     
-    background-image: url(materials/deg180.png);
+    background-image: url('/React-Todo-List-zapov-Spt/deg180.png');
     background-repeat: no-repeat;
     background-size: 12px 8px;
     background-position: right 16px center;
@@ -176,7 +176,7 @@ body {
     width: 50px;
     height: 50px;
 
-    background-image: url(materials/Add\ button.svg);
+    background-image: url('/React-Todo-List-zapov-Spt/Add%20button.svg');
     background-repeat: no-repeat;
     background-size: 50px 50px;
     background-position: center;
