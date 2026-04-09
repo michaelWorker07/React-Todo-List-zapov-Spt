@@ -495,8 +495,8 @@ body {
     width: 18px;
     height: 18px;
     background-color: #ff0404; 
-    -webkit-mask: url("materials/trash-svgrepo-com 1.svg") no-repeat center/contain;
-    mask: url("materials/trash-svgrepo-com 1.svg") no-repeat center/contain;
+    -webkit-mask: url("/React-Todo-List-zapov-Spt/materials/trash-svgrepo-com 1.svg") no-repeat center/contain;
+    mask: url("/React-Todo-List-zapov-Spt/materials/trash-svgrepo-com 1.svg") no-repeat center/contain;
     cursor: pointer;
 }
 
@@ -513,9 +513,8 @@ body {
     
     background-color: #696666; 
     
-    -webkit-mask: url("materials/Frame 6.svg") no-repeat center/contain;
-    mask: url("materials/Frame 6.svg") no-repeat center/contain;
-    
+    -webkit-mask: url("/React-Todo-List-zapov-Spt/materials/Frame 6.svg") no-repeat center/contain;
+    mask: url("/React-Todo-List-zapov-Spt/materials/Frame 6.svg") no-repeat center/contain;
     transition: background-color 0.2s, filter 0.2s;
 }
 
