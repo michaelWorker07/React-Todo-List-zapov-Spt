@@ -72,13 +72,14 @@ export default function App() {
     }, [selected]);
     const [text, setText] = useState('');
     const [isDarkTheme, setIsDarkTheme] = useState(() => {
-        const savedTheme = localStorage.getItem('theme');
-        return savedTheme ? JSON.parse(savedTheme) : false;
-    });
+    const savedTheme = localStorage.getItem('theme');
+    
+    return savedTheme === 'true';  
+});
 
-    useEffect(() => {
-        localStorage.setItem('theme', JSON.stringify(isDarkTheme));
-    }, [isDarkTheme]);
+useEffect(() => {
+    localStorage.setItem('theme', String(isDarkTheme)); 
+}, [isDarkTheme]);
 
     const [modal, setModal] = useState(false);
     const [editId, setEditId] = useState(null);
@@ -383,8 +384,7 @@ export default function App() {
             </i>
 
             <p className="footer-time">{formattedTime}</p> 
-
-            
+   
     </div>
 </footer>
  
