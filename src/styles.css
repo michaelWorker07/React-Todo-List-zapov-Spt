@@ -709,7 +709,7 @@ body {
     min-width: 110px;
     gap: 10px;
 
-    background-image: url("/React-Todo-List-zapov-Spt/materials/chevron-top.svg");
+    background-image: url("/React-Todo-List-zapov-Spt/chevron-top.svg");
     background-repeat: no-repeat;
     background-size: 10px 5px;
     background-position: right 10px center;
@@ -719,7 +719,7 @@ body {
 }
 
 .select-box.open {
-    background-image: url("/React-Todo-List-zapov-Spt/materials/chevron-topX2180degrotate.svg");
+    background-image: url("/React-Todo-List-zapov-Spt/chevron-topX2180degrotate.svg");
     background-size: 10px 8px;
 }
 
