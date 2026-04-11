@@ -1,0 +1,136 @@
+@media (max-width: 768px) {
+    .countersTodos {
+        width: auto;
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        height: auto;
+        position: fixed;
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .Title-h1 {
+        font-size: 24px;
+        padding-top: 100px;
+        padding-bottom: 15px;
+    }
+
+    .header-div {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 10px;
+    }
+
+    .searchTodo {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .custom-select-wrapper, .changeThemeButton, .deleteALLtodoLabel {
+        flex-shrink: 1;
+    }
+
+    .body-div {
+        padding: 0 10px;
+    }
+
+    .todo-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .todo-item__text {
+        max-width: 100%;
+        font-size: 16px;
+    }
+
+    .actionsButton {
+        margin-left: 0;
+        gap: 15px;
+    }
+
+    .addTodoButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        top: auto;
+        left: auto;
+        width: 56px;
+        height: 56px;
+        background-size: 56px 56px;
+    }
+
+    .modal {
+        width: 90%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: auto;
+        padding: 20px;
+    }
+
+    .inputReadTodo {
+        width: 90%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .closeButtonWindowTodo, .createNewTodoButton {
+        position: static;
+        margin: 10px;
+    }
+
+    .footer-text {
+        font-size: 10px;
+    }
+
+    .footer-time {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .countersTodos {
+        font-size: 10px;
+        padding: 5px;
+        width: auto;
+        left: 5px;
+        right: 5px;
+        top: 5px;
+    }
+
+    .Title-h1 {
+        font-size: 20px;
+        padding-top: 90px;
+    }
+
+    .searchTodo, .custom-select-wrapper, .changeThemeButton {
+        font-size: 14px;
+        height: 36px;
+    }
+
+    .select-box {
+        min-width: 90px;
+        font-size: 14px;
+    }
+
+    .todo-item__checkbox {
+        width: 22px;
+        height: 22px;
+    }
+
+    .todo-item__text {
+        font-size: 14px;
+    }
+
+    .addTodoButton {
+        width: 48px;
+        height: 48px;
+        background-size: 48px 48px;
+        bottom: 15px;
+        right: 15px;
+    }
+}

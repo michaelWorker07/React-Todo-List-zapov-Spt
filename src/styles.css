@@ -460,11 +460,6 @@ body {
     vertical-align: middle;         
 }
 
-
-
-
-
-
 .todo-item__checkbox {
     width: 26px;
     height: 26px;
@@ -591,9 +586,13 @@ body {
     left: 15px;
     height: 75px;
     position: fixed;
-    
-    
-    
+
+    opacity: 0;
+    transform: translateY(-20px);
+
+    visibility: hidden;
+    transition: 1.5s;
+
     background: #333;
     color: rgb(255, 255, 255);
 
@@ -606,6 +605,12 @@ body {
     background-color: #746ef3;
     border-bottom: 1px solid #6C63FF;
 
+}
+
+.countersTodos.visible{
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
 }
 
 .counterALL {

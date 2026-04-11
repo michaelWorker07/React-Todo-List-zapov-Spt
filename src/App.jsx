@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./styles.css"; 
 import "./Footer.css";
+import "./devicephone.css";
 
 const UndoTimer = ({ onUndo, duration = 5, text }) => {
   const [seconds, setSeconds] = useState(duration);
@@ -54,35 +55,18 @@ const UndoTimer = ({ onUndo, duration = 5, text }) => {
 };
 
 export default function App() {
-    const [todos, setTodos] = useState(() => {
-        const saved = localStorage.getItem('todo-data');
-        return saved ? JSON.parse(saved) : [];
-    });
-
-    useEffect(() => {
-        localStorage.setItem('todo-data', JSON.stringify(todos))
-    }, [todos]);
-
-    const [isOpen, setIsOpen] = useState(false);
+    const [todos, setTodos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [text, setText] = useState('');           
     const [selected, setSelected] = useState(() => {
-        const savedSelected = localStorage.getItem('todo-filter');
-        return savedSelected ? JSON.parse(savedSelected) : 'ALL';
-    });
-
-    useEffect(() => {
-        localStorage.setItem('todo-filter', JSON.stringify(selected));
-    }, [selected]);
-    const [text, setText] = useState('');
+    const savedSelected = localStorage.getItem('todo-filter');
+    return savedSelected ? savedSelected : 'ALL';
+});
+    const [isOpen, setIsOpen] = useState(false);    
     const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    
-    return savedTheme === 'true';  
-});
-
-useEffect(() => {
-    localStorage.setItem('theme', String(isDarkTheme)); 
-}, [isDarkTheme]);
-
+    return savedTheme === 'true';
+}); 
     const [modal, setModal] = useState(false);
     const [editId, setEditId] = useState(null);
     const [editText, setEditText] = useState("");
@@ -92,6 +76,40 @@ useEffect(() => {
     const [errorMsgInput, seterrorMsgInput] = useState('');
     const [isOnSwitch, setisOnSwitch] = useState(false); 
     const [isShaking, setIsShaking] = useState(false);
+
+
+    useEffect(() => {
+    localStorage.setItem('todo-filter', selected);
+}, [selected]);
+
+useEffect(() => {
+    fetchTodos();
+}, []);
+
+const fetchTodos = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/todos');
+        const data = await response.json();
+        setTodos(data);
+    } catch (error) {
+        console.error('Ошибка загрузки:', error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme !== null) {
+        setIsDarkTheme(savedTheme === 'true');
+    }
+}, []);
+
+useEffect(() => {
+    localStorage.setItem('theme', String(isDarkTheme)); 
+}, [isDarkTheme]);
+
+    
 
     const timerRef = useRef(null);
 
@@ -110,20 +128,25 @@ useEffect(() => {
         setIsOpen(false);
     };
 
-   const handleToggleAndDelete = () => {
+const handleToggleAndDelete = async () => {
     if (todos.length === 0) {
-        
         setIsShaking(true); 
         setTimeout(() => setIsShaking(false), 300);
-        
     } else {
-       
         setisOnSwitch(true); 
-        
-        setTimeout(() => {
-            setTodos([]);       
-            setisOnSwitch(false); 
-        }, 300);
+        try {
+            await fetch('http://localhost:3000/todos/clear', {
+                method: 'DELETE'
+            });
+            
+            setTimeout(() => {
+                setTodos([]);       
+                setisOnSwitch(false); 
+            }, 300);
+        } catch (error) {
+            console.error('Ошибка очистки:', error);
+            setisOnSwitch(false);
+        }
     }
 };
     
@@ -144,33 +167,53 @@ useEffect(() => {
 
     const activeCount = totalCount - completedCount;
 
-    const toggleCheckboxTodo = (id) => {
-        setTodos(todos.map(item =>
-            item.id === id ? { ...item, completed: !item.completed } : item
-        ));
-    };
+    const toggleCheckboxTodo = async (id) => {
+    const todo = todos.find(t => t.id === id);
+    if (todo) {
+        try {
+            await fetch('http://localhost:3000/todos/update', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    text: todo.text, 
+                    completed: !todo.completed 
+                })
+            });
+            
+            setTodos(todos.map(item =>
+                item.id === id ? { ...item, completed: !item.completed } : item
+            ));
+        } catch (error) {
+            console.error('Ошибка обновления:', error);
+        }
+    }
+};
 
     const toggleTheme = () => {
         setIsDarkTheme(!isDarkTheme);
     };
 
-    const addTodo = () => {
-        if (text.trim() === '') {
-            seterrorMsgInput('Поле не может быть пустым!')
-            return;
+    const addTodo = async () => {
+    if (text.trim() === '') {
+        seterrorMsgInput('Поле не может быть пустым!')
+        return;
     }
-            const newTodo = {
-                id: Date.now(), 
-                text: text, 
-                completed: false 
-    };
-            setTodos([...todos, newTodo]);
-            setText('');
-            seterrorMsgInput('');
-            setModal(false);
-        
-    };
-
+    
+    try {
+        const response = await fetch('http://localhost:3000/todos/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+        const newTodo = await response.json();
+        setTodos([...todos, newTodo]);
+        setText('');
+        seterrorMsgInput('');
+        setModal(false);
+    } catch (error) {
+        console.error('Ошибка добавления:', error);
+    }
+};
     const startEdit = (todo) => {
         setEditId(todo.id);
         setEditText(todo.text);
@@ -189,22 +232,28 @@ useEffect(() => {
         }
     };
 
-     const deleteTodo = (id) => {
-       
+     const deleteTodo = async (id) => {
         const itemToDelete = todos.find(todo => todo.id === id);
-        
         if (itemToDelete) {
+        try {
+            await fetch('http://localhost:3000/todos/delete', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: itemToDelete.text })
+            });
+            
             setLastDeleted(itemToDelete);
-
             setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
-
+            
             if (timerRef.current) clearTimeout(timerRef.current);
-
             timerRef.current = setTimeout(() => {
                 setLastDeleted(null);
             }, 5000);
+        } catch (error) {
+            console.error('Ошибка удаления:', error);
         }
-    }; 
+    }
+};
 
     const undoDelete = () => {
         if (lastDeleted) {
@@ -240,7 +289,7 @@ useEffect(() => {
         <div className={isDarkTheme ? 'dark-theme' : 'light-theme'}>
             <div className={`app ${modal ? 'blur-content' : ''}`}>
 
-                <div className="countersTodos">
+                <div className={`countersTodos ${todos.length > 0 ? 'visible' : ''}`}>
                     <p className="counterALL"><span className="spanAllTodo">Всего задач: {totalCount}</span></p>
                     <p className="counterMake"><span className="spanMakeTodo">Активные задачи: {activeCount}</span></p>
                     <p className="counterCompleted"><span className="spanCompletedTodo">Выполненые, текущие: {completedCount}</span></p>
